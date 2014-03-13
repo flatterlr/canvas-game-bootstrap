@@ -1,22 +1,27 @@
+"use strict"; 
 
-(function() {
-    function Sprite(url, pos, size, speed, frames, dir, once) {
-        this.pos = pos;
+var app = app || {}; 
+
+app.Sprite = function(){
+
+    function Sprite(url, sPos,parentPos, size, speed, frames, once) {
+        this.sPos = sPos;
+		this.parentPos = parentPos; 
         this.size = size;
         this.speed = typeof speed === 'number' ? speed : 0;
+		this.speed = speed;
         this.frames = frames;
         this._index = 0;
-        this.url = url;
-        this.dir = dir || 'horizontal';
         this.once = once;
+		this.url = url; 
     };
-
+	
     Sprite.prototype = {
         update: function(dt) {
             this._index += this.speed*dt;
         },
 
-        render: function(ctx) {
+        draw: function(ctx) {
             var frame;
 
             if(this.speed > 0) {
@@ -34,23 +39,19 @@
             }
 
 
-            var x = this.pos[0];
-            var y = this.pos[1];
+            var sX = this.sPos[0];
+            var sY = this.sPos[1];
+			
+			var x = this.parentPos[0]; 
+			var y = this.parentPos[1]; 
 
-            if(this.dir == 'vertical') {
-                y += frame * this.size[1];
-            }
-            else {
-                x += frame * this.size[0];
-            }
-
-            ctx.drawImage(resources.get(this.url),
-                          x, y,
-                          this.size[0], this.size[1],
-                          0, 0,
-                          this.size[0], this.size[1]);
-        }
+            sX += frame * this.size[0];
+			
+			var img = resources.get(this.url);
+			
+			ctx.drawImage(img, sX, sY, this.size[0], this.size[1], x, y,this.size[0], this.size[1]); 
+        },
     };
 
-    window.Sprite = Sprite;
-})();
+    return Sprite; 
+}();

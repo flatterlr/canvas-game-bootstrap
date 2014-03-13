@@ -1,2 +1,1 @@
-
-A simple starting point for writing 2d games. See tutorial.md for more information.
+A 2D brawler game using James Long's javascript sprite animation  code as a starter point. 
